@@ -85,42 +85,13 @@ public class ModelPicker {
 		if (parent.getLatencySum()+model.getLatency()<maxLatency){
 			ModelPickerTreeNode child=new ModelPickerTreeNode(parent, model, modelIndex);
 			parent.addChild(child);
-//			System.out.println("Adding "+modelIndex+" - sum: "+(parent.getLatencySum()+m.getLatency())+" - max: "+maxLatency);
 			for (int i=modelIndex+1; i<models.size(); i++){
 				addLegalNode(child,i,maxLatency);
 			}
 		}		
 		return parent;
 	}
-	
-	/**
-	 * main method just for a quick test
-	 * 
-	 * @param arg
-	 */
-	public static void main(String[] arg){
-		List<Model> models=new ArrayList<>();
-		models.add(new Model("a",10,10));
-		models.add(new Model("b",6,12));
-		models.add(new Model("c",20,7));
-		models.add(new Model("d",10,10));
-		models.add(new Model("e",40,10));
-		models.add(new Model("f",20,15));
-		models.add(new Model("g",10,20));
-		long maxLatency=40;
-		ModelPicker modelPicker=new ModelPicker(models, maxLatency);
 
-		ModelPickerTreeNode bestModelTreeNode=modelPicker.getBestModelTreeNode();
-		System.out.println("The best model is "+bestModelTreeNode.getName()+ 
-				" with a score of "+bestModelTreeNode.getValueSum()+ 
-				" and expected latency of "+bestModelTreeNode.getLatencySum());
-		ModelSet modelSet=modelPicker.getBestModelSet();
-		System.out.println(modelSet.getExpectedValue()+","+modelSet.getExpectedLatency());
-		for (Model m : modelSet.getModels())
-		{
-			System.out.print(m);//.getLatency()+" - ");
-		}
-	}
 
 	/**
 	 * Return the ModelPickerTreeNode with the highest expected value (and also has
@@ -139,11 +110,6 @@ public class ModelPicker {
 	private ModelPickerTreeNode getBestModelTreeNode(ModelPickerTreeNode parent) {
 		
 		ModelPickerTreeNode bestModelTreeNode=parent;
-		if (!parent.hasChildren()){ // leaf!
-			ModelPickerTreeNode node=parent;
-			System.out.println(" -- "+parent.getName()+" -- "+parent.getModelIndex()+" score: "+parent.getValueSum()+", latency: "+parent.getLatencySum());
-			
-		} 
 		for (ModelPickerTreeNode child : parent.getChildren()){
 			ModelPickerTreeNode bestChild=getBestModelTreeNode(child);
 			if (bestChild.getValueSum()>bestModelTreeNode.getValueSum()){

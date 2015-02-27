@@ -34,7 +34,6 @@ public class ModelPickerTreeNode {
 		this.children=new ArrayList<>();
 		this.parent=parent;
 		this.modelIndex=modelIndex;
-//		this.model=models.get(modelIndex);
 		this.model=model;
 		this.models=null;
 		if (parent==null){
